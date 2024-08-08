@@ -6,7 +6,7 @@
 -- Your script can be executed on any database
 
 SELECT band_name,
-IFNULL(split - formed, 2022 - formed -2) AS longevity
+IFNULL(split - formed, 2022 - formed -2) AS lifespan
 FROM metal_bands
 WHERE style LIKE '%Glam rock%'
-ORDER BY longevity DESC;
+ORDER BY lifespan DESC;
