@@ -1,2 +1,10 @@
 # test files
 tmp_res
+*-init.sql
+*-main.sql
+
+# test python files
+*-main.py
+
+#mypy
+.mypy*
