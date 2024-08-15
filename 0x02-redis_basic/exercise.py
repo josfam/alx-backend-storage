@@ -5,6 +5,21 @@
 import redis
 from uuid import uuid4
 from typing import Union, Callable
+from functools import wraps
+
+
+def count_calls(fn: Callable) -> Callable:
+    """Counts how many times methods of the Cache class are called"""
+
+    # inner function
+    @wraps(fn)
+    def wrapper(*args, **kwargs):
+        self = args[0]  # self is the first argument
+        key = fn.__qualname__
+        self._redis.incr(key)
+        return fn(*args, **kwargs)
+
+    return wrapper
 
 
 class Cache:
@@ -14,6 +29,7 @@ class Cache:
         self._redis = redis.Redis()
         self._redis.flushdb()
 
+    @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """Generates a random key, stores the input data in Redis using the
         random key and returns the key.
