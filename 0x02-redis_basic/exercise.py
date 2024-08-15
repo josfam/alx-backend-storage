@@ -28,7 +28,7 @@ class Cache:
         return key
 
     def get(
-        self, key: str, fn: Union[Callable, None]
+        self, key: str, fn: Union[Callable, None] = None
     ) -> Union[str, bytes, int, float, None]:
         """Returns the value belonging to this key in the cache, and uses the
         optional callable provided to turn the value into the desired format.
@@ -44,7 +44,7 @@ class Cache:
         if value is None:
             return None  # replicate redis' behavior
 
-        if not fn:
+        if fn is None:
             return value
         else:
             return fn(value)
