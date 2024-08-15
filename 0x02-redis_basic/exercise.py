@@ -27,7 +27,9 @@ class Cache:
         self._redis.set(key, data)
         return key
 
-    def get(self, key: str, fn: Union[Callable, None]):
+    def get(
+        self, key: str, fn: Union[Callable, None]
+    ) -> Union[str, bytes, int, float, None]:
         """Returns the value belonging to this key in the cache, and uses the
         optional callable provided to turn the value into the desired format.
 
@@ -47,7 +49,7 @@ class Cache:
         else:
             return fn(value)
 
-    def get_str(self, key: str) -> str:
+    def get_str(self, key: str) -> Union[str, None]:
         """Gets back the string representation of the value whose key
         is provided
 
@@ -56,7 +58,7 @@ class Cache:
         """
         return self.get(key, str)
 
-    def get_int(self, key: str) -> int:
+    def get_int(self, key: str) -> Union[int, None]:
         """Gets back the integer representation of the value whose key
         is provided
 
