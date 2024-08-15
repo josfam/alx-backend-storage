@@ -56,7 +56,7 @@ class Cache:
         Args:
             key: The key whose value to retrieve as a string
         """
-        return self.get(key, str)
+        return self.get(key, lambda x: x.decode('utf-8'))
 
     def get_int(self, key: str) -> Union[int, None]:
         """Gets back the integer representation of the value whose key
@@ -65,4 +65,4 @@ class Cache:
         Args:
             key: The key whose integer representation to retrieve
         """
-        return self.get(key, int)
+        return self.get(key, lambda x: int(x.decode('utf-8')))
