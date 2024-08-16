@@ -8,16 +8,16 @@ from typing import Union, Callable
 from functools import wraps
 
 
-def count_calls(fn: Callable) -> Callable:
+def count_calls(method: Callable) -> Callable:
     """Counts how many times methods of the Cache class are called"""
 
     # inner function
-    @wraps(fn)
+    @wraps(method)
     def wrapper(*args, **kwargs):
         self = args[0]  # self is the first argument
-        key = fn.__qualname__
+        key = method.__qualname__
         self._redis.incr(key)
-        return fn(*args, **kwargs)
+        return method(*args, **kwargs)
 
     return wrapper
 
@@ -74,7 +74,7 @@ class Cache:
         """
         return self.get(key, lambda x: x.decode('utf-8'))
 
-    def get_int(self, key: str) -> Union[int, None]:
+    def get_int(self, key: str) -> Union[str, bytes, int, float, None]:
         """Gets back the integer representation of the value whose key
         is provided
 
