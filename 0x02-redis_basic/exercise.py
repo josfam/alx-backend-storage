@@ -121,4 +121,6 @@ def replay(fn: Callable) -> None:
     outputs = local_redis.lrange(f'{fn_name}:outputs', 0, -1)
 
     for input_call, output in zip(inputs, outputs):
-        print(f'{input_call} -> {output} ')
+        input_str = input_call.decode('utf-8')
+        output_str = output.decode('utf-8')
+        print(f"{fn_name}(*{input_str}) -> {output_str}")
