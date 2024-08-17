@@ -103,3 +103,22 @@ class Cache:
             key: The key whose integer representation to retrieve
         """
         return self.get(key, lambda x: int(x.decode('utf-8')))
+
+
+def replay(fn: Callable) -> None:
+    """Shows the history of all the inputs and outputs from calling the
+    provided function
+    """
+    fn_name = fn.__qualname__
+    local_redis = redis.Redis()
+    inputs = f'{fn_name}:inputs'
+    outputs = f'{fn_name}:outputs'
+
+    call_count = local_redis.get(f'{fn_name}')
+    print(f"{fn_name} was called {call_count.decode('utf-8')} times:")
+
+    inputs = local_redis.lrange(f'{fn_name}:inputs', 0, -1)
+    outputs = local_redis.lrange(f'{fn_name}:outputs', 0, -1)
+
+    for input_call, output in zip(inputs, outputs):
+        print(f'{input_call} -> {output} ')
